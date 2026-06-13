@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import NotificationCenter from './NotificationCenter';
+import { content } from '../constants/content';
 
 const links = [
-  { to: '/', label: 'Home' },
-  { to: '/portal', label: 'Customer Portal' },
-  { to: '/dispatcher', label: 'Dispatcher' },
-  { to: '/driver/d1', label: 'Driver' },
-  { to: '/manager', label: 'Manager' },
+  { to: '/', label: content.nav.home },
+  { to: '/portal', label: content.nav.customerPortal },
+  { to: '/dispatcher', label: content.nav.dispatcher },
+  { to: '/driver/d1', label: content.nav.driver },
+  { to: '/manager', label: content.nav.manager },
 ];
 
 export default function Navbar() {
@@ -15,11 +16,11 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <NavLink to="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-white font-bold">
-            LX
+            {content.app.brandInitials}
           </div>
           <div className="leading-tight">
-            <div className="text-sm font-semibold text-slate-900">Logix Dispatch</div>
-            <div className="text-xs text-slate-500">Logistics Management Platform</div>
+            <div className="text-sm font-semibold text-slate-900">{content.app.brand}</div>
+            <div className="text-xs text-slate-500">{content.app.brandSubtitle}</div>
           </div>
         </NavLink>
 
@@ -51,10 +52,10 @@ export default function Navbar() {
             if (e.target.value) window.location.href = e.target.value;
           }}
           defaultValue=""
-          aria-label="Navigate"
+          aria-label={content.nav.navigateAria}
         >
           <option value="" disabled>
-            Menu
+            {content.nav.menu}
           </option>
           {links.map((l) => (
             <option key={l.to} value={l.to}>

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import type { AppNotification } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { buildEmailHtml } from '../services/notificationService';
+import { content } from '../constants/content';
 
 const statusStyles: Record<string, string> = {
   sending: 'bg-amber-50 text-amber-700',
@@ -11,12 +12,7 @@ const statusStyles: Record<string, string> = {
   failed: 'bg-red-50 text-red-700',
 };
 
-const statusLabels: Record<string, string> = {
-  sending: 'Sending…',
-  sent: 'Sent',
-  simulated: 'Simulated',
-  failed: 'Failed',
-};
+const statusLabels = content.notificationCenter.statusLabels;
 
 export function DeliveryStatusChip({ status }: { status?: AppNotification['status'] }) {
   const key = status ?? 'sent';
@@ -70,7 +66,7 @@ export function EmailPreviewModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
       role="dialog"
       aria-modal="true"
-      aria-label="Notification preview"
+      aria-label={content.notificationCenter.previewAria}
     >
       <div className="flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-white shadow-xl">
         <div className="flex items-start justify-between border-b border-slate-200 p-4">
@@ -90,7 +86,7 @@ export function EmailPreviewModal({
             type="button"
             onClick={onClose}
             className="ml-3 text-slate-400 hover:text-slate-700"
-            aria-label="Close preview"
+            aria-label={content.notificationCenter.closePreview}
           >
             ×
           </button>
@@ -108,7 +104,7 @@ export function EmailPreviewModal({
               {notification.body}
             </div>
             <p className="mt-3 text-center text-xs text-slate-500">
-              SMS channel is simulated for the demo.
+              {content.notificationCenter.smsSimulated}
             </p>
           </div>
         )}
@@ -147,7 +143,7 @@ export default function NotificationCenter() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="relative flex h-9 w-9 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-        aria-label={`Notifications${unread > 0 ? `, ${unread} unread` : ''}`}
+        aria-label={content.nav.notificationsAria(unread)}
       >
         <svg
           viewBox="0 0 24 24"
@@ -173,21 +169,21 @@ export default function NotificationCenter() {
       {open && (
         <div className="absolute right-0 top-11 z-30 w-96 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2.5">
-            <h2 className="text-sm font-semibold text-slate-900">Notifications</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.notificationCenter.title}</h2>
             {unread > 0 && (
               <button
                 type="button"
                 onClick={markAllRead}
                 className="text-xs font-medium text-brand-700 hover:underline"
               >
-                Mark all read
+                {content.notificationCenter.markAllRead}
               </button>
             )}
           </div>
 
           {ordered.length === 0 ? (
             <p className="px-4 py-8 text-center text-sm text-slate-500">
-              No notifications sent yet. Update a shipment status to trigger one.
+              {content.notificationCenter.empty}
             </p>
           ) : (
             <ul className="max-h-96 divide-y divide-slate-100 overflow-y-auto">

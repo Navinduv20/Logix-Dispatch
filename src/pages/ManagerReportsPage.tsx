@@ -15,6 +15,7 @@ import {
   YAxis,
 } from 'recharts';
 import { useAppStore } from '../store/useAppStore';
+import { content } from '../constants/content';
 import type { PerformanceReportRow, ShipmentStatus } from '../types';
 
 const STATUS_COLORS: Record<ShipmentStatus, string> = {
@@ -102,21 +103,21 @@ export default function ManagerReportsPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-slate-900">Operations dashboard</h1>
+        <h1 className="text-2xl font-semibold text-slate-900">{content.manager.title}</h1>
         <p className="mt-1 text-sm text-slate-600">
-          On-time performance, fleet utilisation, and fuel cost trends for the last seven days.
+          {content.manager.subtitle}
         </p>
       </header>
 
       <section className="grid gap-4 sm:grid-cols-3">
-        <KPI label="Deliveries completed" value={totals.delivered.toString()} trend="+12%" />
+        <KPI label={content.manager.kpiDelivered} value={totals.delivered.toString()} trend="+12%" />
         <KPI
-          label="On-time rate"
+          label={content.manager.kpiOnTime}
           value={`${Math.round(totals.avgOnTime * 100)}%`}
           trend="+3.1 pts"
         />
         <KPI
-          label="Fuel spend (LKR)"
+          label={content.manager.kpiFuel}
           value={totals.fuelCost.toLocaleString('en-GB')}
           trend="-2.4%"
         />
@@ -124,7 +125,7 @@ export default function ManagerReportsPage() {
 
       <section className="grid gap-4 lg:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
-          <h2 className="text-sm font-semibold text-slate-900">On-time rate, last 7 days</h2>
+          <h2 className="text-sm font-semibold text-slate-900">{content.manager.onTimeChartTitle}</h2>
           <div className="mt-3 h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={weekTrend} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
@@ -136,7 +137,7 @@ export default function ManagerReportsPage() {
                 <Line
                   type="monotone"
                   dataKey="onTime"
-                  name="On time %"
+                  name={content.manager.seriesOnTime}
                   stroke="#1f6feb"
                   strokeWidth={2}
                   dot={{ r: 3 }}
@@ -144,7 +145,7 @@ export default function ManagerReportsPage() {
                 <Line
                   type="monotone"
                   dataKey="delayed"
-                  name="Delayed %"
+                  name={content.manager.seriesDelayed}
                   stroke="#f97316"
                   strokeWidth={2}
                   dot={{ r: 3 }}
@@ -155,7 +156,7 @@ export default function ManagerReportsPage() {
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">Status mix</h2>
+          <h2 className="text-sm font-semibold text-slate-900">{content.manager.statusMixTitle}</h2>
           <div className="mt-3 h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -180,7 +181,7 @@ export default function ManagerReportsPage() {
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-slate-900">Driver performance</h2>
+        <h2 className="text-sm font-semibold text-slate-900">{content.manager.driverPerformanceTitle}</h2>
         <div className="mt-3 h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={driverRows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
@@ -189,10 +190,10 @@ export default function ManagerReportsPage() {
               <YAxis stroke="#64748b" fontSize={12} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="deliveriesCompleted" name="Deliveries" fill="#1f6feb" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="deliveriesCompleted" name={content.manager.seriesDeliveries} fill="#1f6feb" radius={[4, 4, 0, 0]} />
               <Bar
                 dataKey="averageDurationMin"
-                name="Avg duration (min)"
+                name={content.manager.seriesAvgDuration}
                 fill="#f59e0b"
                 radius={[4, 4, 0, 0]}
               />
@@ -203,11 +204,11 @@ export default function ManagerReportsPage() {
           <table className="min-w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500">
-                <th className="py-2 pr-4">Driver</th>
-                <th className="py-2 pr-4">Completed</th>
-                <th className="py-2 pr-4">On-time</th>
-                <th className="py-2 pr-4">Avg duration</th>
-                <th className="py-2">Fuel (LKR)</th>
+                <th className="py-2 pr-4">{content.manager.table.driver}</th>
+                <th className="py-2 pr-4">{content.manager.table.completed}</th>
+                <th className="py-2 pr-4">{content.manager.table.onTime}</th>
+                <th className="py-2 pr-4">{content.manager.table.avgDuration}</th>
+                <th className="py-2">{content.manager.table.fuel}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">

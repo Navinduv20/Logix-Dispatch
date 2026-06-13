@@ -4,17 +4,10 @@ import { useAppStore } from '../store/useAppStore';
 import LiveMap from '../components/LiveMap';
 import StatusBadge from '../components/StatusBadge';
 import CreateShipmentModal from '../components/CreateShipmentModal';
+import { content } from '../constants/content';
 import type { ShipmentStatus } from '../types';
 
-const FILTERS: { value: ShipmentStatus | 'all'; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'assigned', label: 'Assigned' },
-  { value: 'in_transit', label: 'In transit' },
-  { value: 'out_for_delivery', label: 'Out for delivery' },
-  { value: 'delayed', label: 'Delayed' },
-  { value: 'failed', label: 'Failed' },
-];
+const FILTERS = content.dispatcher.filters;
 
 export default function DispatcherPage() {
   const shipments = useAppStore((s) => s.shipments);
@@ -56,9 +49,9 @@ export default function DispatcherPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Dispatcher console</h1>
+          <h1 className="text-2xl font-semibold text-slate-900">{content.dispatcher.title}</h1>
           <p className="mt-1 text-sm text-slate-600">
-            Live fleet view with drag-free assignment and at-a-glance queue health.
+            {content.dispatcher.subtitle}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -67,7 +60,7 @@ export default function DispatcherPage() {
             onClick={() => setCreateOpen(true)}
             className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-600"
           >
-            + New shipment
+            {content.dispatcher.newShipment}
           </button>
           <div className="flex flex-wrap gap-1 rounded-lg bg-slate-100 p-1">
           {FILTERS.map((f) => (
@@ -99,7 +92,7 @@ export default function DispatcherPage() {
 
         <aside className="space-y-4 lg:col-span-2">
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">Fleet</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.dispatcher.fleet}</h2>
             <ul className="mt-3 space-y-2">
               {drivers.map((d) => (
                 <li
@@ -114,7 +107,7 @@ export default function DispatcherPage() {
                     <div className="text-xs font-medium capitalize text-slate-700">
                       {d.status.replace('_', ' ')}
                     </div>
-                    <div className="text-xs text-slate-500">{byDriver.get(d.id) ?? 0} active</div>
+                    <div className="text-xs text-slate-500">{byDriver.get(d.id) ?? 0} {content.dispatcher.activeSuffix}</div>
                   </div>
                 </li>
               ))}
@@ -122,7 +115,7 @@ export default function DispatcherPage() {
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">Queue</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.dispatcher.queue}</h2>
             <ul className="mt-3 divide-y divide-slate-100">
               {filtered.map((s) => {
                 const customer = customers.find((c) => c.id === s.customerId);
@@ -140,7 +133,7 @@ export default function DispatcherPage() {
                         {customer?.name} · {s.destination}
                       </div>
                       <div className="mt-0.5 text-xs text-slate-500">
-                        Driver: {driver?.name ?? 'Unassigned'}
+                        {content.dispatcher.driverPrefix} {driver?.name ?? content.dispatcher.unassigned}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -158,7 +151,7 @@ export default function DispatcherPage() {
                           defaultValue=""
                         >
                           <option value="" disabled>
-                            Pick driver
+                            {content.dispatcher.pickDriver}
                           </option>
                           {drivers.map((d) => (
                             <option key={d.id} value={d.id}>
@@ -172,7 +165,7 @@ export default function DispatcherPage() {
                           onClick={() => setAssigning(s.id)}
                           className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
                         >
-                          {s.driverId ? 'Reassign' : 'Assign'}
+                          {s.driverId ? content.dispatcher.reassign : content.dispatcher.assign}
                         </button>
                       )}
                     </div>
@@ -182,7 +175,7 @@ export default function DispatcherPage() {
             </ul>
             {filtered.length === 0 && (
               <p className="py-6 text-center text-xs text-slate-500">
-                No shipments match this filter.
+                {content.dispatcher.noMatch}
               </p>
             )}
           </div>

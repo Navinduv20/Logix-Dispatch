@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Shipment } from '../types';
 import StatusBadge from './StatusBadge';
+import { content } from '../constants/content';
 
 interface Props {
   shipment: Shipment;
@@ -25,13 +26,13 @@ export default function TrackingCard({ shipment, driverName, customerName, compa
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Tracking number
+            {content.trackingCard.trackingNumberLabel}
           </div>
           <div className="truncate font-mono text-base font-semibold text-slate-900">
             {shipment.trackingNumber}
           </div>
           {customerName && !compact && (
-            <div className="mt-1 text-sm text-slate-600">For {customerName}</div>
+            <div className="mt-1 text-sm text-slate-600">{content.trackingCard.forPrefix} {customerName}</div>
           )}
         </div>
         <StatusBadge status={shipment.status} />
@@ -39,22 +40,22 @@ export default function TrackingCard({ shipment, driverName, customerName, compa
 
       <div className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
         <div>
-          <div className="text-xs text-slate-500">Destination</div>
+          <div className="text-xs text-slate-500">{content.trackingCard.destination}</div>
           <div className="truncate text-slate-800">{shipment.destination}</div>
         </div>
         <div>
-          <div className="text-xs text-slate-500">ETA</div>
+          <div className="text-xs text-slate-500">{content.trackingCard.eta}</div>
           <div className="text-slate-800">{formatDate(shipment.estimatedDelivery)}</div>
         </div>
         {!compact && (
           <>
             <div>
-              <div className="text-xs text-slate-500">Priority</div>
+              <div className="text-xs text-slate-500">{content.trackingCard.priority}</div>
               <div className="capitalize text-slate-800">{shipment.priority}</div>
             </div>
             <div>
-              <div className="text-xs text-slate-500">Driver</div>
-              <div className="text-slate-800">{driverName ?? 'Unassigned'}</div>
+              <div className="text-xs text-slate-500">{content.trackingCard.driver}</div>
+              <div className="text-slate-800">{driverName ?? content.trackingCard.unassigned}</div>
             </div>
           </>
         )}
@@ -65,7 +66,7 @@ export default function TrackingCard({ shipment, driverName, customerName, compa
           to={`/track/${shipment.trackingNumber}`}
           className="text-sm font-medium text-brand-600 hover:text-brand-700"
         >
-          View tracking
+          {content.trackingCard.viewTracking}
         </Link>
         <span className="text-xs text-slate-500">{shipment.weight} kg</span>
       </div>

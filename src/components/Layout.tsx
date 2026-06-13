@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import { content } from '../constants/content';
 
 export default function Layout() {
   return (
@@ -10,7 +11,7 @@ export default function Layout() {
       </main>
       <footer className="border-t border-slate-200 bg-white py-4">
         <div className="mx-auto max-w-7xl px-4 text-xs text-slate-500">
-          Logix Dispatch.
+          {content.app.footer}
         </div>
       </footer>
     </div>

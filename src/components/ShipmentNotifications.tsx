@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { AppNotification } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { ChannelChip, DeliveryStatusChip, EmailPreviewModal } from './NotificationCenter';
+import { content } from '../constants/content';
 
 export default function ShipmentNotifications({ shipmentId }: { shipmentId: string }) {
   const notifications = useAppStore((s) =>
@@ -11,14 +12,14 @@ export default function ShipmentNotifications({ shipmentId }: { shipmentId: stri
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 className="text-sm font-semibold text-slate-900">Notifications sent</h2>
+      <h2 className="text-sm font-semibold text-slate-900">{content.shipmentNotifications.title}</h2>
       <p className="mt-1 text-xs text-slate-500">
-        Email and SMS updates dispatched to the recipient for this shipment.
+        {content.shipmentNotifications.hint}
       </p>
 
       {notifications.length === 0 ? (
         <p className="mt-4 text-sm text-slate-500">
-          Nothing sent yet for this shipment. Status changes and reschedules will appear here.
+          {content.shipmentNotifications.empty}
         </p>
       ) : (
         <ul className="mt-4 divide-y divide-slate-100">

@@ -1,6 +1,7 @@
 import type { Shipment } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import TrackingCard from './TrackingCard';
+import { content } from '../constants/content';
 
 interface Props {
   shipments: Shipment[];
@@ -15,7 +16,7 @@ export default function ShipmentList({ shipments, emptyMessage, compact }: Props
   if (shipments.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
-        {emptyMessage ?? 'No shipments to show.'}
+        {emptyMessage ?? content.shipmentList.empty}
       </div>
     );
   }

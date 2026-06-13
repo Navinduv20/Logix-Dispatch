@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Shipment } from '../types';
 import { useAppStore } from '../store/useAppStore';
+import { content } from '../constants/content';
 
 interface Props {
   shipment: Shipment;
@@ -37,24 +38,26 @@ export default function RescheduleModal({ shipment, open, onClose }: Props) {
     >
       <div className="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">Reschedule delivery</h2>
+          <h2 className="text-lg font-semibold text-slate-900">{content.reschedule.title}</h2>
           <button
             type="button"
             onClick={onClose}
             className="text-slate-400 hover:text-slate-700"
-            aria-label="Close"
+            aria-label={content.common.close}
           >
             ×
           </button>
         </div>
         <p className="mt-1 text-sm text-slate-600">
-          Tracking {shipment.trackingNumber}, current ETA{' '}
-          {new Date(shipment.estimatedDelivery).toLocaleString('en-GB')}.
+          {content.reschedule.summary(
+            shipment.trackingNumber,
+            new Date(shipment.estimatedDelivery).toLocaleString('en-GB')
+          )}
         </p>
 
         <div className="mt-4 space-y-3">
           <label className="block text-sm">
-            <span className="font-medium text-slate-700">New delivery date and time</span>
+            <span className="font-medium text-slate-700">{content.reschedule.newDate}</span>
             <input
               type="datetime-local"
               value={date}
@@ -63,12 +66,12 @@ export default function RescheduleModal({ shipment, open, onClose }: Props) {
             />
           </label>
           <label className="block text-sm">
-            <span className="font-medium text-slate-700">Delivery instructions</span>
+            <span className="font-medium text-slate-700">{content.reschedule.instructions}</span>
             <textarea
               rows={3}
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
-              placeholder="Optional: gate code, doorman, safe-drop spot..."
+              placeholder={content.reschedule.instructionsPlaceholder}
               className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </label>
@@ -80,14 +83,14 @@ export default function RescheduleModal({ shipment, open, onClose }: Props) {
             onClick={onClose}
             className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
           >
-            Cancel
+            {content.reschedule.cancel}
           </button>
           <button
             type="button"
             onClick={handleSave}
             className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-600"
           >
-            Save changes
+            {content.reschedule.save}
           </button>
         </div>
       </div>

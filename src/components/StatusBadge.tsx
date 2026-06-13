@@ -1,4 +1,5 @@
 import type { ShipmentStatus } from '../types';
+import { statusLabels } from '../constants/content';
 
 const COLORS: Record<ShipmentStatus, string> = {
   pending: 'bg-slate-200 text-slate-700',
@@ -8,16 +9,6 @@ const COLORS: Record<ShipmentStatus, string> = {
   delivered: 'bg-emerald-100 text-emerald-800',
   failed: 'bg-rose-100 text-rose-800',
   delayed: 'bg-orange-100 text-orange-800',
-};
-
-const LABELS: Record<ShipmentStatus, string> = {
-  pending: 'Pending',
-  assigned: 'Assigned',
-  in_transit: 'In transit',
-  out_for_delivery: 'Out for delivery',
-  delivered: 'Delivered',
-  failed: 'Failed',
-  delayed: 'Delayed',
 };
 
 interface Props {
@@ -30,7 +21,7 @@ export default function StatusBadge({ status, className = '' }: Props) {
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${COLORS[status]} ${className}`}
     >
-      {LABELS[status]}
+      {statusLabels[status]}
     </span>
   );
 }

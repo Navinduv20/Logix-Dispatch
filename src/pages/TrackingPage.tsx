@@ -6,6 +6,7 @@ import LiveMap from '../components/LiveMap';
 import DeliveryHistoryTimeline from '../components/DeliveryHistoryTimeline';
 import RescheduleModal from '../components/RescheduleModal';
 import ShipmentNotifications from '../components/ShipmentNotifications';
+import { content } from '../constants/content';
 
 export default function TrackingPage() {
   const { id } = useParams<{ id: string }>();
@@ -32,15 +33,15 @@ export default function TrackingPage() {
   if (!shipment) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900">Shipment not found</h1>
+        <h1 className="text-xl font-semibold text-slate-900">{content.tracking.notFoundTitle}</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Try one of the demo tracking numbers: LGX-100001 to LGX-100008.
+          {content.tracking.notFoundHint}
         </p>
         <Link
           to="/"
           className="mt-4 inline-block rounded-md bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600"
         >
-          Back to home
+          {content.tracking.backHome}
         </Link>
       </div>
     );
@@ -52,14 +53,14 @@ export default function TrackingPage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Tracking number
+              {content.tracking.trackingNumberLabel}
             </div>
             <h1 className="font-mono text-2xl font-semibold text-slate-900">
               {shipment.trackingNumber}
             </h1>
             <div className="mt-1 flex items-center gap-2">
               <StatusBadge status={shipment.status} />
-              <span className="text-sm text-slate-600">ETA {etaLabel}</span>
+              <span className="text-sm text-slate-600">{content.tracking.etaPrefix} {etaLabel}</span>
             </div>
           </div>
           <div className="flex gap-2">
@@ -68,7 +69,7 @@ export default function TrackingPage() {
               onClick={() => setRescheduleOpen(true)}
               className="rounded-md border border-brand-500 bg-white px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
             >
-              Reschedule
+              {content.tracking.reschedule}
             </button>
           </div>
         </div>
@@ -81,9 +82,9 @@ export default function TrackingPage() {
         />
 
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">Delivery history</h2>
+          <h2 className="text-sm font-semibold text-slate-900">{content.tracking.deliveryHistory}</h2>
           <p className="mt-1 text-xs text-slate-500">
-            Every status change is logged for compliance and customer-service review.
+            {content.tracking.deliveryHistoryHint}
           </p>
           <div className="mt-4">
             <DeliveryHistoryTimeline events={shipment.history} />
@@ -95,27 +96,27 @@ export default function TrackingPage() {
 
       <aside className="space-y-4">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">Shipment details</h2>
+          <h2 className="text-sm font-semibold text-slate-900">{content.tracking.shipmentDetails}</h2>
           <dl className="mt-3 space-y-2 text-sm">
             <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">Origin</dt>
+              <dt className="text-slate-500">{content.tracking.origin}</dt>
               <dd className="text-right text-slate-800">{shipment.origin}</dd>
             </div>
             <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">Destination</dt>
+              <dt className="text-slate-500">{content.tracking.destination}</dt>
               <dd className="text-right text-slate-800">{shipment.destination}</dd>
             </div>
             <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">Priority</dt>
+              <dt className="text-slate-500">{content.tracking.priority}</dt>
               <dd className="capitalize text-slate-800">{shipment.priority}</dd>
             </div>
             <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">Weight</dt>
+              <dt className="text-slate-500">{content.tracking.weight}</dt>
               <dd className="text-slate-800">{shipment.weight} kg</dd>
             </div>
             {shipment.specialInstructions && (
               <div className="pt-2">
-                <dt className="text-slate-500">Instructions</dt>
+                <dt className="text-slate-500">{content.tracking.instructions}</dt>
                 <dd className="mt-1 rounded-md bg-slate-50 p-2 text-slate-700">
                   {shipment.specialInstructions}
                 </dd>
@@ -126,7 +127,7 @@ export default function TrackingPage() {
 
         {customer && (
           <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">Recipient</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.tracking.recipient}</h2>
             <div className="mt-2 text-sm text-slate-800">{customer.name}</div>
             <div className="text-xs text-slate-500">{customer.email}</div>
             <div className="text-xs text-slate-500">{customer.phone}</div>
@@ -145,7 +146,7 @@ export default function TrackingPage() {
 
         {driver && (
           <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">Driver</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.tracking.driver}</h2>
             <div className="mt-2 text-sm text-slate-800">{driver.name}</div>
             <div className="text-xs text-slate-500">{driver.vehicle}</div>
             <div className="text-xs text-slate-500">{driver.phone}</div>

@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore';
 import LiveMap from '../components/LiveMap';
 import StatusBadge from '../components/StatusBadge';
 import StatusUpdateForm from '../components/StatusUpdateForm';
+import { content } from '../constants/content';
 import type { Shipment } from '../types';
 
 const STOP_PRIORITY: Record<Shipment['status'], number> = {
@@ -40,8 +41,8 @@ export default function DriverPage() {
   if (!driver) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900">Driver not found</h1>
-        <p className="mt-2 text-sm text-slate-600">Pick a driver from the list below.</p>
+        <h1 className="text-xl font-semibold text-slate-900">{content.driver.notFoundTitle}</h1>
+        <p className="mt-2 text-sm text-slate-600">{content.driver.notFoundHint}</p>
         <ul className="mt-4 flex flex-wrap justify-center gap-2">
           {drivers.map((d) => (
             <li key={d.id}>
@@ -101,9 +102,9 @@ export default function DriverPage() {
 
         <div className="lg:col-span-2">
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">Today's route</h2>
+            <h2 className="text-sm font-semibold text-slate-900">{content.driver.todaysRoute}</h2>
             <p className="mt-1 text-xs text-slate-500">
-              Optimised by ETA and priority. Tap a stop to see details.
+              {content.driver.routeHint}
             </p>
             <ol className="mt-3 space-y-2">
               {activeStops.map((s, i) => {
@@ -133,7 +134,7 @@ export default function DriverPage() {
                       </div>
                       <div className="mt-2 text-xs text-slate-600">{s.destination}</div>
                       <div className="mt-0.5 text-xs text-slate-500">
-                        {c?.name} · ETA{' '}
+                        {c?.name} · {content.driver.etaPrefix}{' '}
                         {new Date(s.estimatedDelivery).toLocaleTimeString('en-GB', {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -145,14 +146,14 @@ export default function DriverPage() {
               })}
               {activeStops.length === 0 && (
                 <li className="py-4 text-center text-xs text-slate-500">
-                  No active stops. You are done for the day.
+                  {content.driver.noActiveStops}
                 </li>
               )}
             </ol>
             {doneStops.length > 0 && (
               <details className="mt-3 text-xs">
                 <summary className="cursor-pointer text-slate-600">
-                  Completed ({doneStops.length})
+                  {content.driver.completed(doneStops.length)}
                 </summary>
                 <ul className="mt-2 space-y-1">
                   {doneStops.map((s) => (
@@ -171,31 +172,31 @@ export default function DriverPage() {
       {selected && (
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-slate-900">Stop details</h3>
+            <h3 className="text-sm font-semibold text-slate-900">{content.driver.stopDetails}</h3>
             <dl className="mt-3 space-y-2 text-sm">
               <div>
-                <dt className="text-xs text-slate-500">Tracking</dt>
+                <dt className="text-xs text-slate-500">{content.driver.tracking}</dt>
                 <dd className="font-mono text-slate-800">{selected.trackingNumber}</dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Recipient</dt>
+                <dt className="text-xs text-slate-500">{content.driver.recipient}</dt>
                 <dd className="text-slate-800">
                   {customers.find((c) => c.id === selected.customerId)?.name}
                 </dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Address</dt>
+                <dt className="text-xs text-slate-500">{content.driver.address}</dt>
                 <dd className="text-slate-800">{selected.destination}</dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Phone</dt>
+                <dt className="text-xs text-slate-500">{content.driver.phone}</dt>
                 <dd className="text-slate-800">
                   {customers.find((c) => c.id === selected.customerId)?.phone}
                 </dd>
               </div>
               {selected.specialInstructions && (
                 <div>
-                  <dt className="text-xs text-slate-500">Instructions</dt>
+                  <dt className="text-xs text-slate-500">{content.driver.instructions}</dt>
                   <dd className="rounded-md bg-amber-50 p-2 text-sm text-amber-900">
                     {selected.specialInstructions}
                   </dd>
