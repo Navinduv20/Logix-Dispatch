@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { content } from '../constants/content';
 
 export default function NotificationToast() {
   const notifications = useAppStore((s) => s.notifications);
@@ -53,7 +54,7 @@ export default function NotificationToast() {
               type="button"
               onClick={() => dismiss(n.id)}
               className="text-slate-400 hover:text-slate-700"
-              aria-label="Dismiss notification"
+              aria-label={content.common.dismissNotification}
             >
               ×
             </button>

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { content } from '../constants/content';
 
 export default function HomePage() {
   const [tracking, setTracking] = useState('');
@@ -12,12 +13,12 @@ export default function HomePage() {
     e.preventDefault();
     const trimmed = tracking.trim();
     if (!trimmed) {
-      setError('Please enter a tracking number.');
+      setError(content.home.errorEmpty);
       return;
     }
     const found = shipments.find((s) => s.trackingNumber.toLowerCase() === trimmed.toLowerCase());
     if (!found) {
-      setError('We could not find that tracking number. Try LGX-100001 to LGX-100008 in the demo.');
+      setError(content.home.errorNotFound);
       return;
     }
     navigate(`/track/${found.trackingNumber}`);
@@ -27,33 +28,32 @@ export default function HomePage() {
     <div className="space-y-10">
       <section className="rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-900 p-8 text-white shadow-lg">
         <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
-          Logix Dispatch
+          {content.home.eyebrow}
         </p>
         <h1 className="mt-2 text-3xl font-bold leading-tight md:text-4xl">
-          Real-time logistics visibility for dispatchers, drivers, and customers.
+          {content.home.headline}
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-white/80 md:text-base">
-          One platform replacing spreadsheets, phone calls, and paper route sheets. Built for small
-          logistics operators who need the control of enterprise tooling without the complexity.
+          {content.home.subhead}
         </p>
 
         <form
           onSubmit={handleTrack}
           className="mt-6 flex w-full max-w-xl flex-col gap-2 sm:flex-row"
-          aria-label="Track a shipment"
+          aria-label={content.home.trackFormAria}
         >
           <input
             type="text"
             value={tracking}
             onChange={(e) => setTracking(e.target.value)}
-            placeholder="Enter tracking number (e.g. LGX-100001)"
+            placeholder={content.home.trackPlaceholder}
             className="flex-1 rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-white placeholder-white/60 backdrop-blur focus:border-white focus:outline-none focus:ring-2 focus:ring-white/40"
           />
           <button
             type="submit"
             className="rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
           >
-            Track shipment
+            {content.home.trackButton}
           </button>
         </form>
         {error && <p className="mt-2 text-sm text-rose-100">{error}</p>}
@@ -63,39 +63,18 @@ export default function HomePage() {
             to="/dispatcher?create=1"
             className="rounded-md border border-white/40 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
           >
-            + Create shipment
+            {content.home.createShipment}
           </Link>
         </div>
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold text-slate-900">Choose a workspace</h2>
+        <h2 className="text-lg font-semibold text-slate-900">{content.home.workspacesTitle}</h2>
         <p className="mt-1 text-sm text-slate-600">
-          The demo ships with four role-based views. Each role sees only what it needs.
+          {content.home.workspacesSubtitle}
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              to: '/portal',
-              title: 'Customer Portal',
-              copy: 'Track, reschedule, and manage delivery notifications in a self-service view.',
-            },
-            {
-              to: '/dispatcher',
-              title: 'Dispatcher',
-              copy: 'See every driver on the map, assign parcels, and intervene when things go wrong.',
-            },
-            {
-              to: '/driver/d1',
-              title: 'Driver',
-              copy: 'A mobile-first route list with one-tap status updates and turn-by-turn navigation.',
-            },
-            {
-              to: '/manager',
-              title: 'Manager Reports',
-              copy: 'Fleet KPIs, on-time rates, and fuel cost trends in a single dashboard.',
-            },
-          ].map((card) => (
+          {content.home.workspaceCards.map((card) => (
             <Link
               key={card.to}
               to={card.to}
@@ -113,19 +92,19 @@ export default function HomePage() {
       <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-3">
         <div>
           <div className="text-2xl font-bold text-slate-900">{shipments.length}</div>
-          <div className="text-sm text-slate-500">Active shipments</div>
+          <div className="text-sm text-slate-500">{content.home.statActive}</div>
         </div>
         <div>
           <div className="text-2xl font-bold text-slate-900">
             {shipments.filter((s) => s.status === 'delivered').length}
           </div>
-          <div className="text-sm text-slate-500">Delivered this window</div>
+          <div className="text-sm text-slate-500">{content.home.statDelivered}</div>
         </div>
         <div>
           <div className="text-2xl font-bold text-slate-900">
             {shipments.filter((s) => s.status === 'delayed' || s.status === 'failed').length}
           </div>
-          <div className="text-sm text-slate-500">Need attention</div>
+          <div className="text-sm text-slate-500">{content.home.statAttention}</div>
         </div>
       </section>
     </div>
